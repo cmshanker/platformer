@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=4 uid="uid://c65qx6vg6xoem"]
+[gd_scene load_steps=10 format=4 uid="uid://c65qx6vg6xoem"]
 
 [ext_resource type="PackedScene" uid="uid://cpk54xdsaew1b" path="res://scenes/player_character.tscn" id="1_bswci"]
+[ext_resource type="Script" uid="uid://d3747ajvmxdmg" path="res://scripts/camera.gd" id="1_fcfvj"]
 [ext_resource type="PackedScene" uid="uid://cy0l8gxqaipev" path="res://scenes/killzone.tscn" id="1_rus8k"]
 [ext_resource type="TileSet" uid="uid://bcun7k2wjl5a3" path="res://assets/tilesets/level_1.tres" id="2_rus8k"]
 [ext_resource type="Texture2D" uid="uid://ct8urjmohktvo" path="res://assets/sprites/tiles.png" id="4_5xbjy"]
@@ -35,14 +36,16 @@ sources/0 = SubResource("TileSetAtlasSource_4nkto")
 
 [node name="Level1" type="Node2D"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(160, 90)
-
 [node name="PlayerCharacter" parent="." instance=ExtResource("1_bswci")]
 z_index = 100
 position = Vector2(30, 128)
 collision_layer = 3
 collision_mask = 3
+
+[node name="Camera" type="Camera2D" parent="PlayerCharacter"]
+position = Vector2(130, -38)
+position_smoothing_enabled = true
+script = ExtResource("1_fcfvj")
 
 [node name="Killzone" parent="." instance=ExtResource("1_rus8k")]
 position = Vector2(116, 190)
@@ -92,5 +95,7 @@ collision_mask = 2
 position = Vector2(308, 132)
 collision_layer = 2
 collision_mask = 2
+
+[node name="Transitions" type="Node" parent="."]
 
 [connection signal="body_entered" from="Killzone" to="PlayerCharacter" method="_on_killzone_body_entered"]
