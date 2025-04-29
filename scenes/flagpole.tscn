@@ -1,0 +1,72 @@
+[gd_scene load_steps=8 format=3 uid="uid://c16065c7xc6je"]
+
+[ext_resource type="Script" path="res://scripts/flagpole.gd" id="1_q6f3u"]
+[ext_resource type="Texture2D" uid="uid://q8625cutpd1l" path="res://assets/sprites/flagpole.png" id="1_yjpxj"]
+[ext_resource type="Texture2D" uid="uid://chmy1c4kwfe0s" path="res://assets/sprites/flag.png" id="2_7ppxh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hstcr"]
+size = Vector2(4, 59)
+
+[sub_resource type="Animation" id="Animation_bwmea"]
+resource_name = "move"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(8, 5), Vector2(8, 55)]
+}
+
+[sub_resource type="Animation" id="Animation_rur36"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(8, 5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_d1aov"]
+_data = {
+"RESET": SubResource("Animation_rur36"),
+"move": SubResource("Animation_bwmea")
+}
+
+[node name="Flagpole" type="Node2D"]
+script = ExtResource("1_q6f3u")
+
+[node name="Pole" type="Area2D" parent="."]
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Pole"]
+position = Vector2(2, 30)
+texture = ExtResource("1_yjpxj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pole"]
+position = Vector2(2, 29.5)
+shape = SubResource("RectangleShape2D_hstcr")
+
+[node name="Flag" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Flag"]
+position = Vector2(8, 5)
+texture = ExtResource("2_7ppxh")
+
+[node name="Move" type="AnimationPlayer" parent="Flag/Sprite2D"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_d1aov")
+}
+
+[connection signal="body_entered" from="Pole" to="." method="_on_pole_body_entered"]
